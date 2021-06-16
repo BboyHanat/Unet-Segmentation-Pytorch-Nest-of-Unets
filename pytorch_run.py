@@ -268,7 +268,7 @@ for i in range(epoch):
         prediction_sigmoid = F.sigmoid(y_pred)
         loss_class_t = bce(prediction_sigmoid, y)
         loss_dice_t = dice_loss(prediction_sigmoid, y)  # Dice_loss Used
-        lossT = 0.9*loss_class_t + 0.1*loss_dice_t
+        lossT = 0.1*loss_class_t + 0.9*loss_dice_t
 
         train_loss += lossT.item() * x.size(0)
         lossT.backward()
@@ -297,7 +297,7 @@ for i in range(epoch):
         prediction_sigmoid1 = F.sigmoid(y_pred1)
         loss_class_v = bce(prediction_sigmoid1, y1)
         loss_dice_v = dice_loss(prediction_sigmoid1, y1)  # Dice_loss Used
-        lossL = 0.9 * loss_class_v + 0.1 * loss_dice_v
+        lossL = 0.1 * loss_class_v + 0.9 * loss_dice_v
 
         valid_loss += lossL.item() * x1.size(0)
         x_size1 = lossL.item() * x1.size(0)
