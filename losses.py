@@ -2,6 +2,8 @@ from __future__ import print_function, division
 import torch.nn.functional as F
 
 
+
+
 def dice_loss(prediction, target):
     """Calculating the dice loss
     Args:
@@ -30,7 +32,7 @@ def calc_loss(prediction, target, bce_weight=0.9):
     Output:
         loss : dice loss of the epoch """
     bce = F.binary_cross_entropy_with_logits(prediction, target)
-    prediction = F.sigmoid(prediction)
+
     dice = dice_loss(prediction, target)
 
     loss = bce * bce_weight + dice * (1 - bce_weight)

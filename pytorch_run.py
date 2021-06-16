@@ -2,6 +2,7 @@ from __future__ import print_function, division
 import os
 import numpy as np
 from PIL import Image
+from torch import nn
 import glob
 # import SimpleITK as sitk
 from torch import optim
@@ -22,7 +23,7 @@ import torchsummary
 import shutil
 import random
 from Models import Unet_dict, NestedUNet, U_Net, R2U_Net, AttU_Net, R2AttU_Net
-from losses import calc_loss, dice_loss, threshold_predictions_v, threshold_predictions_p
+from losses import dice_loss, threshold_predictions_v, threshold_predictions_p
 from ploting import plot_kernels, LayerActivations, input_images, plot_grad_flow
 from Metrics import dice_coeff, accuracy_score
 import time
@@ -231,6 +232,7 @@ else:
 #######################################################
 # Training loop
 #######################################################
+bce = nn.BCELoss()
 print(len(train_idx), len(valid_idx))
 for i in range(epoch):
 
@@ -263,7 +265,10 @@ for i in range(epoch):
         opt.zero_grad()
 
         y_pred = model_test(x)
-        lossT = calc_loss(y_pred, y)  # Dice_loss Used
+        prediction_sigmoid = F.sigmoid(y_pred)
+        loss_class_t = bce(prediction_sigmoid, y)
+        loss_dice_t = dice_loss(prediction_sigmoid, y)  # Dice_loss Used
+        lossT = 0.9*loss_class_t + 0.1*loss_dice_t
 
         train_loss += lossT.item() * x.size(0)
         lossT.backward()
@@ -289,7 +294,10 @@ for i in range(epoch):
         x1, y1 = x1.to(device), y1.to(device)
 
         y_pred1 = model_test(x1)
-        lossL = calc_loss(y_pred1, y1)  # Dice_loss Used
+        prediction_sigmoid1 = F.sigmoid(y_pred1)
+        loss_class_v = bce(prediction_sigmoid1, y1)
+        loss_dice_v = dice_loss(prediction_sigmoid1, y1)  # Dice_loss Used
+        lossL = 0.9 * loss_class_v + 0.1 * loss_dice_v
 
         valid_loss += lossL.item() * x1.size(0)
         x_size1 = lossL.item() * x1.size(0)
