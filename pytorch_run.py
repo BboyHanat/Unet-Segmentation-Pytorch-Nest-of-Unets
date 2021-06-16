@@ -231,7 +231,7 @@ else:
 #######################################################
 # Training loop
 #######################################################
-
+print(len(train_idx), len(valid_idx))
 for i in range(epoch):
 
     train_loss = 0.0
@@ -247,11 +247,13 @@ for i in range(epoch):
     model_test.train()
     k = 1
 
+    step = 0
     for x, y in train_loader:
+
         x, y = x.to(device), y.to(device)
 
         # If want to get the input images with their Augmentation - To check the data flowing in net
-        input_images(x, y, i, n_iter, k)
+        # input_images(x, y, i, n_iter, k)
 
         # grid_img = torchvision.utils.make_grid(x)
         # writer1.add_image('images', grid_img, 0)
@@ -269,7 +271,8 @@ for i in range(epoch):
         opt.step()
         x_size = lossT.item() * x.size(0)
         k = 2
-
+        print("epoch {} step {}, loss {}".format(i, step, lossT))
+        step += 1
     #    for name, param in model_test.named_parameters():
     #        name = name.replace('.', '/')
     #        writer1.add_histogram(name, param.data.cpu().numpy(), i + 1)
