@@ -97,5 +97,6 @@ class Images_Dataset_folder(torch.utils.data.Dataset):
         random.seed(seed)
         torch.manual_seed(seed)
         label = self.label_transform(l1)
+        label = label * 255
 
         return img, label
