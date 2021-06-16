@@ -65,7 +65,7 @@ class Images_Dataset_folder(torch.utils.data.Dataset):
             torchvision.transforms.Resize((640, 1280)),
             torchvision.transforms.CenterCrop(96),
             torchvision.transforms.RandomRotation((-10, 10)),
-            torchvision.transforms.Grayscale(),
+            # torchvision.transforms.Grayscale(),
             torchvision.transforms.ToTensor(),
             # torchvision.transforms.Lambda(lambda x: torch.cat([x, 1 - x], dim=0))
         ])
@@ -73,7 +73,7 @@ class Images_Dataset_folder(torch.utils.data.Dataset):
             torchvision.transforms.Resize((640, 1280), interpolation=Image.NEAREST),
             torchvision.transforms.CenterCrop(96),
             torchvision.transforms.RandomRotation((-10, 10)),
-            torchvision.transforms.Grayscale(),
+            # torchvision.transforms.Grayscale(),
             torchvision.transforms.ToTensor(),
             # torchvision.transforms.Lambda(lambda x: torch.cat([x, 1 - x], dim=0))
         ])
