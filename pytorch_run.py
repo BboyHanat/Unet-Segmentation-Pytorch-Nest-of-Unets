@@ -100,7 +100,7 @@ model_test.to(device)
 # Getting the Summary of Model
 #######################################################
 
-torchsummary.summary(model_test, input_size=(3, 1280, 640))
+torchsummary.summary(model_test, input_size=(3, 640, 1280))
 
 #######################################################
 # Passing the Dataset of Images and Labels
@@ -121,13 +121,13 @@ Training_Data = Images_Dataset_folder(t_data,
 #######################################################
 
 data_transform = torchvision.transforms.Compose([
-    torchvision.transforms.Resize((1280, 640)),
+    torchvision.transforms.Resize((640, 1280)),
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 ])
 
 label_data_transform = torchvision.transforms.Compose([
-    torchvision.transforms.Resize((1280, 640)),
+    torchvision.transforms.Resize((640, 1280)),
     torchvision.transforms.ToTensor()
 ])
 
