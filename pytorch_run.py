@@ -100,7 +100,7 @@ model_test.to(device)
 # Getting the Summary of Model
 #######################################################
 
-torchsummary.summary(model_test, input_size=(3, 128, 128))
+torchsummary.summary(model_test, input_size=(3, 1280, 640))
 
 #######################################################
 # Passing the Dataset of Images and Labels
