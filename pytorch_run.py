@@ -303,14 +303,15 @@ for i in range(epoch):
 
     pred_tb = model_test(s_tb.unsqueeze(0).to(device)).cpu()
     pred_tb = F.sigmoid(pred_tb)
-    pred_tb = pred_tb.detach().numpy()
+    pred_tb = pred_tb.detach().numpy()[0]
+    pred_tb = np.squeeze(pred_tb)
+    pred_tb =  pred_tb * 255.0
+    pred_tb = np.clip(pred_tb, 0, 255)
+    pred_tb = np.asarray(pred_tb, dtype=np.uint8)
 
+    image_name = './model/pred/img_iteration_' + str(n_iter) + '_epoch_' + str(i) + '.png'
+    cv2.imwrite(image_name, pred_tb)
     # pred_tb = threshold_predictions_v(pred_tb)
-
-    x1 = plt.imsave(
-        './model/pred/img_iteration_' + str(n_iter) + '_epoch_'
-        + str(i) + '.png', pred_tb[0][0])
-
     #  accuracy = accuracy_score(pred_tb[0][0], s_label)
 
     #######################################################
