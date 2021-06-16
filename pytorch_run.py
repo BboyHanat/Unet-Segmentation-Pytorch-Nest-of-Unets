@@ -123,7 +123,7 @@ Training_Data = Images_Dataset_folder(t_data,
 data_transform = torchvision.transforms.Compose([
     torchvision.transforms.Resize((640, 1280)),
     torchvision.transforms.ToTensor(),
-    torchvision.transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+    # torchvision.transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 ])
 
 label_data_transform = torchvision.transforms.Compose([
