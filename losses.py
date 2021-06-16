@@ -20,7 +20,7 @@ def dice_loss(prediction, target):
     return 1 - ((2. * intersection + smooth) / (i_flat.sum() + t_flat.sum() + smooth))
 
 
-def calc_loss(prediction, target, bce_weight=0.5):
+def calc_loss(prediction, target, bce_weight=0.9):
     """Calculating the loss and metrics
     Args:
         prediction = predicted image
