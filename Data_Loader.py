@@ -60,33 +60,23 @@ class Images_Dataset_folder(torch.utils.data.Dataset):
         self.labels = sorted(os.listdir(labels_dir))
         self.images_dir = images_dir
         self.labels_dir = labels_dir
-        self.transformI = transformI
-        self.transformM = transformM
 
-        if self.transformI:
-            self.tx = self.transformI
-        else:
-            self.tx = torchvision.transforms.Compose([
-                torchvision.transforms.Resize((640, 1280)),
-                torchvision.transforms.CenterCrop(96),
-                torchvision.transforms.RandomRotation((-10, 10)),
-                # torchvision.transforms.RandomHorizontalFlip(),
-                torchvision.transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4),
-                torchvision.transforms.ToTensor(),
-                torchvision.transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
-            ])
-
-        if self.transformM:
-            self.lx = self.transformM
-        else:
-            self.lx = torchvision.transforms.Compose([
-                torchvision.transforms.Resize((640, 1280)),
-                torchvision.transforms.CenterCrop(96),
-                torchvision.transforms.RandomRotation((-10, 10)),
-                torchvision.transforms.Grayscale(),
-                torchvision.transforms.ToTensor(),
-                # torchvision.transforms.Lambda(lambda x: torch.cat([x, 1 - x], dim=0))
-            ])
+        self.image_transform = torchvision.transforms.Compose([
+            torchvision.transforms.Resize((640, 1280)),
+            torchvision.transforms.CenterCrop(96),
+            torchvision.transforms.RandomRotation((-10, 10)),
+            torchvision.transforms.Grayscale(),
+            torchvision.transforms.ToTensor(),
+            # torchvision.transforms.Lambda(lambda x: torch.cat([x, 1 - x], dim=0))
+        ])
+        self.label_transform = torchvision.transforms.Compose([
+            torchvision.transforms.Resize((640, 1280), interpolation=Image.NEAREST),
+            torchvision.transforms.CenterCrop(96),
+            torchvision.transforms.RandomRotation((-10, 10)),
+            torchvision.transforms.Grayscale(),
+            torchvision.transforms.ToTensor(),
+            # torchvision.transforms.Lambda(lambda x: torch.cat([x, 1 - x], dim=0))
+        ])
 
     def __len__(self):
 
@@ -101,11 +91,11 @@ class Images_Dataset_folder(torch.utils.data.Dataset):
         # apply this seed to img tranfsorms
         random.seed(seed)
         torch.manual_seed(seed)
-        img = self.tx(i1)
+        img = self.image_transform(i1)
 
-        # apply this seed to target/label tranfsorms  
+        # apply this seed to target/label tranfsorms
         random.seed(seed)
         torch.manual_seed(seed)
-        label = self.lx(l1)
+        label = self.label_transform(l1)
 
         return img, label
