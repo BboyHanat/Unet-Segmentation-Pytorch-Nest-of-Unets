@@ -304,12 +304,12 @@ for i in range(epoch):
     s_label = label_data_transform(im_label)
     s_label = s_label.detach().numpy()
 
-    pred_tb = model_test(s_tb.unsqueeze(0).to(device)).cpu()
+    pred_tb = model_test(s_tb.unsqueeze(0).to(device))
     pred_tb = F.sigmoid(pred_tb)
-    pred_tb = pred_tb.detach().numpy()[0]
+    pred_tb = pred_tb.cpu().data.numpy()[0]
     pred_tb = np.squeeze(pred_tb)
-    pred_tb =  pred_tb * 255.0
-    pred_tb = np.clip(pred_tb, 0, 255)
+    pred_tb = pred_tb * 255.0
+    # pred_tb = np.clip(pred_tb, 0, 255)
     pred_tb = np.asarray(pred_tb, dtype=np.uint8)
 
     image_name = './model/pred/img_iteration_' + str(n_iter) + '_epoch_' + str(i) + '.png'
